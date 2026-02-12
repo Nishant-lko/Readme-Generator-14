@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="AI-powered README Generator — Create professional README.md files for any GitHub repository in seconds.">
+    <title>AI README Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <!-- ========== HEADER ========== -->
+    <header class="header">
+        <div class="header__inner">
+            <div class="header__logo">
+                <span class="header__icon">📝</span>
+                <h1 class="header__title">README<span class="header__title--accent">.ai</span></h1>
+            </div>
+            <p class="header__tagline">Generate professional READMEs in seconds</p>
+        </div>
+    </header>
+
+    <!-- ========== MAIN ========== -->
+    <main class="main">
+
+        <!-- Tab Navigation -->
+        <div class="tabs" id="mainTabs">
+            <button class="tabs__btn active" data-tab="generate" id="tabGenerate">🚀 Generate</button>
+            <button class="tabs__btn" data-tab="analyze" id="tabAnalyze">📊 Analyze</button>
+        </div>
+
+        <!-- ==================== GENERATE TAB ==================== -->
+        <div class="tab-content" id="tabContentGenerate">
+
+            <!-- Input Card -->
+            <section class="card card--input" id="inputCard">
+                <div class="card__glow"></div>
+                <h2 class="card__title">
+                    <span class="card__title-icon">🚀</span>
+                    Generate README
+                </h2>
+                <p class="card__description">
+                    Paste any GitHub repository URL and let AI craft a polished README for you.
+                </p>
+                <form id="generateForm" class="form">
+                    <!-- Repo URL -->
+                    <div class="form__group">
+                        <label for="repoUrl" class="form__label">GitHub Repository URL</label>
+                        <div class="form__input-wrapper">
+                            <span class="form__input-icon">🔗</span>
+                            <input type="text" id="repoUrl" class="form__input"
+                                placeholder="https://github.com/owner/repository" required autocomplete="off">
+                        </div>
+                    </div>
+
+                    <!-- Style Selector -->
+                    <div class="form__group">
+                        <label class="form__label">README Style</label>
+                        <div class="style-selector" id="styleSelector">
+                            <label class="style-option">
+                                <input type="radio" name="style" value="minimal" class="style-option__radio">
+                                <div class="style-option__card">
+                                    <span class="style-option__icon">📄</span>
+                                    <span class="style-option__name">Minimal</span>
+                                    <span class="style-option__desc">Short & focused</span>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="style" value="detailed" class="style-option__radio" checked>
+                                <div class="style-option__card">
+                                    <span class="style-option__icon">📋</span>
+                                    <span class="style-option__name">Detailed</span>
+                                    <span class="style-option__desc">Comprehensive</span>
+                                </div>
+                            </label>
+                            <label class="style-option">
+                                <input type="radio" name="style" value="awesome" class="style-option__radio">
+                                <div class="style-option__card">
+                                    <span class="style-option__icon">🌟</span>
+                                    <span class="style-option__name">Awesome</span>
+                                    <span class="style-option__desc">Eye-catching</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Custom Instructions (collapsible) -->
+                    <div class="form__group">
+                        <button type="button" class="form__toggle" id="toggleAdvanced">
+                            <span class="form__toggle-icon" id="toggleIcon">▶</span>
+                            Advanced Options
+                        </button>
+                        <div class="form__advanced hidden" id="advancedPanel">
+                            <!-- Custom Instructions -->
+                            <div class="form__group">
+                                <label for="customInstructions" class="form__label">Custom Instructions</label>
+                                <textarea id="customInstructions" class="form__textarea"
+                                    placeholder="e.g. Focus on the API endpoints, add a deployment section, write in a casual tone..."
+                                    rows="3"></textarea>
+                            </div>
+
+                            <!-- Private Repo Token -->
+                            <div class="form__group">
+                                <label for="githubToken" class="form__label">
+                                    🔒 GitHub Token <span class="form__label-hint">(for private repos)</span>
+                                </label>
+                                <div class="form__input-wrapper">
+                                    <span class="form__input-icon">🔑</span>
+                                    <input type="password" id="githubToken" class="form__input"
+                                        placeholder="ghp_xxxxxxxxxxxx (optional)" autocomplete="off">
+                                </div>
+                                <p class="form__hint">Only needed for private repositories. Token is not stored.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn--primary" id="submitBtn">
+                        <span class="btn__text">Generate README</span>
+                        <span class="btn__icon">⚡</span>
+                    </button>
+                </form>
+            </section>
+
+        </div>
+
+        <!-- ==================== ANALYZE TAB ==================== -->
+        <div class="tab-content hidden" id="tabContentAnalyze">
+
+            <section class="card card--input" id="analyzeInputCard">
+                <div class="card__glow"></div>
+                <h2 class="card__title">
+                    <span class="card__title-icon">📊</span>
+                    Analyze README
+                </h2>
+                <p class="card__description">
+                    Get an AI-powered quality score and improvement suggestions for any repository's existing README.
+                </p>
+                <form id="analyzeForm" class="form">
+                    <div class="form__group">
+                        <label for="analyzeRepoUrl" class="form__label">GitHub Repository URL</label>
+                        <div class="form__input-wrapper">
+                            <span class="form__input-icon">🔗</span>
+                            <input type="text" id="analyzeRepoUrl" class="form__input"
+                                placeholder="https://github.com/owner/repository" required autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <label for="analyzeGithubToken" class="form__label">
+                            🔒 GitHub Token <span class="form__label-hint">(for private repos, optional)</span>
+                        </label>
+                        <div class="form__input-wrapper">
+                            <span class="form__input-icon">🔑</span>
+                            <input type="password" id="analyzeGithubToken" class="form__input"
+                                placeholder="ghp_xxxxxxxxxxxx (optional)" autocomplete="off">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary" id="analyzeSubmitBtn">
+                        <span class="btn__text">Analyze README</span>
+                        <span class="btn__icon">🔍</span>
+                    </button>
+                </form>
+            </section>
+
+        </div>
+
+        <!-- ==================== SHARED STATES ==================== -->
+
+        <!-- Loading State -->
+        <section class="card card--loading hidden" id="loadingCard">
+            <div class="loader">
+                <div class="loader__spinner"></div>
+                <h3 class="loader__title" id="loadingTitle">Generating your README…</h3>
+                <p class="loader__subtitle" id="loadingStatus">Fetching repository data from GitHub</p>
+            </div>
+            <div class="loader__steps" id="loadingSteps">
+                <div class="loader__step active" id="step1">
+                    <span class="loader__step-icon">📡</span> Fetching repo data
+                </div>
+                <div class="loader__step" id="step2">
+                    <span class="loader__step-icon">🤖</span> AI is writing
+                </div>
+                <div class="loader__step" id="step3">
+                    <span class="loader__step-icon">✨</span> Polishing output
+                </div>
+            </div>
+        </section>
+
+        <!-- Generate Result -->
+        <section class="card card--result hidden" id="resultCard">
+            <div class="result__header">
+                <div class="result__meta">
+                    <h2 class="result__title" id="resultRepoName">owner/repo</h2>
+                    <span class="result__badge" id="resultTime">⏱ 0.0s</span>
+                </div>
+                <div class="result__actions">
+                    <button class="btn btn--icon" id="copyBtn" title="Copy Markdown">
+                        📋 Copy
+                    </button>
+                    <button class="btn btn--icon" id="downloadBtn" title="Download .md file">
+                        💾 Download
+                    </button>
+                    <button class="btn btn--icon" id="newBtn" title="Generate another">
+                        🔄 New
+                    </button>
+                </div>
+            </div>
+
+            <!-- Toggle: Preview / Raw -->
+            <div class="result__toggle">
+                <button class="toggle__btn active" id="togglePreview" data-view="preview">Preview</button>
+                <button class="toggle__btn" id="toggleRaw" data-view="raw">Markdown</button>
+            </div>
+
+            <div class="result__content" id="resultPreview">
+                <!-- rendered HTML goes here -->
+            </div>
+            <div class="result__content hidden" id="resultRaw">
+                <pre class="result__code"><code id="resultRawCode"></code></pre>
+            </div>
+        </section>
+
+        <!-- Analyze Result -->
+        <section class="card card--analyze-result hidden" id="analyzeResultCard">
+            <div class="result__header">
+                <div class="result__meta">
+                    <h2 class="result__title" id="analyzeRepoName">owner/repo</h2>
+                </div>
+                <div class="result__actions">
+                    <button class="btn btn--icon" id="analyzeNewBtn" title="Analyze another">
+                        🔄 New
+                    </button>
+                </div>
+            </div>
+
+            <!-- Score Circle -->
+            <div class="score-section">
+                <div class="score-circle" id="scoreCircle">
+                    <svg viewBox="0 0 120 120" class="score-circle__svg">
+                        <circle cx="60" cy="60" r="54" class="score-circle__bg" />
+                        <circle cx="60" cy="60" r="54" class="score-circle__fill" id="scoreArc" />
+                    </svg>
+                    <span class="score-circle__value" id="scoreValue">0</span>
+                </div>
+                <p class="score-section__summary" id="scoreSummary">Analyzing…</p>
+            </div>
+
+            <!-- Strengths -->
+            <div class="analysis-section" id="strengthsSection">
+                <h3 class="analysis-section__title">✅ Strengths</h3>
+                <ul class="analysis-section__list" id="strengthsList"></ul>
+            </div>
+
+            <!-- Improvements -->
+            <div class="analysis-section" id="improvementsSection">
+                <h3 class="analysis-section__title">💡 Suggested Improvements</h3>
+                <ul class="analysis-section__list" id="improvementsList"></ul>
+            </div>
+
+            <!-- Missing Sections -->
+            <div class="analysis-section" id="missingSection">
+                <h3 class="analysis-section__title">📭 Missing Sections</h3>
+                <div class="missing-tags" id="missingTags"></div>
+            </div>
+        </section>
+
+        <!-- Error -->
+        <section class="card card--error hidden" id="errorCard">
+            <div class="error">
+                <span class="error__icon">⚠️</span>
+                <h3 class="error__title">Something went wrong</h3>
+                <p class="error__message" id="errorMessage">An unexpected error occurred.</p>
+                <button class="btn btn--secondary" id="retryBtn">Try Again</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <p>&copy; 2026 README.ai &mdash; Powered by LangChain &amp; Gemini</p>
+    </footer>
+
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
